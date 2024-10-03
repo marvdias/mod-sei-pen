@@ -12,11 +12,14 @@ class PaginaProcesso extends PaginaTeste
 
   public function concluirProcesso()
     {
-      $this->test->frame(null);
-      $this->test->frame("ifrConteudoVisualizacao");
-      $concluirProcessoButton = $this->test->byXPath("//img[@alt='Concluir Processo']");
-      $concluirProcessoButton->click();
-  }
+        $this->test->frame(null);
+        $this->test->frame("ifrConteudoVisualizacao");
+        $concluirProcessoButton = $this->test->byXPath("//img[@alt='Concluir Processo']");
+    	$concluirProcessoButton->click();
+        $this->test->frame("ifrVisualizacao");
+        $confirmarConcluirProcessoButton = $this->test->byId('sbmSalvar');
+    	$confirmarConcluirProcessoButton->click();
+    }
 
   public function incluirDocumento()
     {
