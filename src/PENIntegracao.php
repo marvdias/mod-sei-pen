@@ -1134,8 +1134,8 @@ class PENIntegracao extends SeiIntegracao
         $registrosPorPagina = 50;
         $idRepositorioEstruturaOrganizacional = $_POST['idRepositorioEstruturaOrganizacional'];
         $numeroDeIdentificacaoDaEstrutura     = $_POST['numeroDeIdentificacaoDaEstrutura'];
-        $siglaUnidade = ($_POST['siglaUnidade'] == '') ? null : utf8_encode($_POST['siglaUnidade']);
-        $nomeUnidade  = ($_POST['nomeUnidade']  == '') ? null : utf8_encode($_POST['nomeUnidade']);
+        $siglaUnidade = ($_POST['siglaUnidade'] == '') ? null : mb_convert_encoding($_POST['siglaUnidade'], 'UTF-8', 'ISO-8859-1');
+        $nomeUnidade  = ($_POST['nomeUnidade']  == '') ? null : mb_convert_encoding($_POST['nomeUnidade'], 'UTF-8', 'ISO-8859-1');
         $offset       = $_POST['offset'] * $registrosPorPagina;
 
         $objProcessoEletronicoRN = new ProcessoEletronicoRN();
@@ -1149,9 +1149,9 @@ class PENIntegracao extends SeiIntegracao
         if(!is_null($arrHierarquiaEstruturaDTO[0])){
           foreach ($arrHierarquiaEstruturaDTO as $key => $estrutura) {
             //Monta um array com as estruturas para retornar o JSON
-            $arrEstruturas['estrutura'][$key]['nome'] = utf8_encode($estrutura->get('Nome'));
+            $arrEstruturas['estrutura'][$key]['nome'] = mb_convert_encoding($estrutura->get('Nome'), 'UTF-8', 'ISO-8859-1');
             $arrEstruturas['estrutura'][$key]['numeroDeIdentificacaoDaEstrutura'] = $estrutura->get('NumeroDeIdentificacaoDaEstrutura');
-            $arrEstruturas['estrutura'][$key]['sigla'] = utf8_encode($estrutura->get('Sigla'));
+            $arrEstruturas['estrutura'][$key]['sigla'] = mb_convert_encoding($estrutura->get('Sigla'), 'UTF-8', 'ISO-8859-1');
             $arrEstruturas['estrutura'][$key]['ativo'] = $estrutura->get('Ativo');
             $arrEstruturas['estrutura'][$key]['aptoParaReceberTramites'] = $estrutura->get('AptoParaReceberTramites');
             $arrEstruturas['estrutura'][$key]['codigoNoOrgaoEntidade'] = $estrutura->get('CodigoNoOrgaoEntidade');
@@ -1200,7 +1200,7 @@ class PENIntegracao extends SeiIntegracao
         if (!is_null($arrObjEstruturaDTO[0])) {
           $interface = new ProcessoEletronicoINT();
           $arrHierarquiaEstruturaDTO = $interface->gerarHierarquiaEstruturas($arrObjEstruturaDTO);
-          $arrEstruturas[$key]->nome = utf8_encode($arrHierarquiaEstruturaDTO[0]->get('Nome'));
+          $arrEstruturas[$key]->nome = mb_convert_encoding($arrHierarquiaEstruturaDTO[0]->get('Nome'), 'UTF-8', 'ISO-8859-1');
         }
       }
     }

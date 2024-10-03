@@ -173,7 +173,7 @@ class ExpedirProcedimentoRN extends InfraRN {
               if(!array_key_exists($strAtributo, $arrErros)){
                 $arrErros[$strAtributo] = array();
               }
-                $arrErros[$strAtributo][] = utf8_encode($objInfraValidacao->getStrDescricao());
+                $arrErros[$strAtributo][] = mb_convert_encoding($objInfraValidacao->getStrDescricao(), 'UTF-8', 'ISO-8859-1');
             }
 
               $this->gravarLogDebug(sprintf('Erro durante validação dos dados do processo %s.', $objProcedimentoDTO->getStrProtocoloProcedimentoFormatado(), $arrErros), 2);
@@ -559,10 +559,10 @@ class ExpedirProcedimentoRN extends InfraRN {
 
       $objProcesso = new stdClass();
       $objProcesso->staTipoProtocolo = ProcessoEletronicoRN::$STA_TIPO_PROTOCOLO_PROCESSO;
-      $objProcesso->protocolo = utf8_encode($objProcedimentoDTO->getStrProtocoloProcedimentoFormatado());
+      $objProcesso->protocolo = mb_convert_encoding($objProcedimentoDTO->getStrProtocoloProcedimentoFormatado(), 'UTF-8', 'ISO-8859-1');
       $objProcesso->nivelDeSigilo = $this->obterNivelSigiloPEN($objProcedimentoDTO->getStrStaNivelAcessoLocalProtocolo());
-      $objProcesso->processoDeNegocio  = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objProcedimentoDTO->getStrNomeTipoProcedimento(), 100));
-      $objProcesso->descricao          = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objProcedimentoDTO->getStrDescricaoProtocolo(), 100));
+      $objProcesso->processoDeNegocio  = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objProcedimentoDTO->getStrNomeTipoProcedimento(), 100), 'UTF-8', 'ISO-8859-1');
+      $objProcesso->descricao          = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objProcedimentoDTO->getStrDescricaoProtocolo(), 100), 'UTF-8', 'ISO-8859-1');
       $objProcesso->dataHoraDeProducao = $this->objProcessoEletronicoRN->converterDataWebService($objProcedimentoDTO->getDtaGeracaoProtocolo());
       if($objProcedimentoDTO->getStrStaNivelAcessoLocalProtocolo() == ProtocoloRN::$NA_RESTRITO){
         $objProcesso->hipoteseLegal = new stdClass();
@@ -601,9 +601,9 @@ class ExpedirProcedimentoRN extends InfraRN {
 
         $objOperacao = new stdClass();
         $objOperacao->dataHoraOperacao = $this->objProcessoEletronicoRN->converterDataWebService($objAtividadeDTO->getDthAbertura());
-        $objOperacao->unidadeOperacao = $objAtividadeDTO->getStrDescricaoUnidade()?utf8_encode($objAtividadeDTO->getStrDescricaoUnidade()):"NA";
-        $objOperacao->operacao = $objAtividadeDTO->getStrNomeTarefa()?$this->objProcessoEletronicoRN->reduzirCampoTexto(strip_tags(utf8_encode($objAtividadeDTO->getStrNomeTarefa())), 1000):"NA";
-        $objOperacao->usuario = $objAtividadeDTO->getStrNomeUsuarioOrigem()?utf8_encode($objAtividadeDTO->getStrNomeUsuarioOrigem()):"NA";
+        $objOperacao->unidadeOperacao = $objAtividadeDTO->getStrDescricaoUnidade()?mb_convert_encoding($objAtividadeDTO->getStrDescricaoUnidade(), 'UTF-8', 'ISO-8859-1'):"NA";
+        $objOperacao->operacao = $objAtividadeDTO->getStrNomeTarefa()?$this->objProcessoEletronicoRN->reduzirCampoTexto(strip_tags(mb_convert_encoding($objAtividadeDTO->getStrNomeTarefa(), 'UTF-8', 'ISO-8859-1')), 1000):"NA";
+        $objOperacao->usuario = $objAtividadeDTO->getStrNomeUsuarioOrigem()?mb_convert_encoding($objAtividadeDTO->getStrNomeUsuarioOrigem(), 'UTF-8', 'ISO-8859-1'):"NA";
         $arrObjOperacao[] = $objOperacao;
       }
 
@@ -851,7 +851,7 @@ class ExpedirProcedimentoRN extends InfraRN {
       $objUsuarioProdutor = $this->consultarUsuario($dblIdProcedimento);
       if(isset($objUsuarioProdutor)) {
         //Dados do produtor do processo
-        $objProcesso->produtor->nome = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objUsuarioProdutor->getStrNome(), 150));
+        $objProcesso->produtor->nome = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objUsuarioProdutor->getStrNome(), 150), 'UTF-8', 'ISO-8859-1');
         //TODO: Obter tipo de pessoa física dos contatos do SEI
         $objProcesso->produtor->numeroDeIdentificacao = $objUsuarioProdutor->getDblCpfContato();
         $objProcesso->produtor->tipo = self::STA_TIPO_PESSOA_FISICA;
@@ -861,7 +861,7 @@ class ExpedirProcedimentoRN extends InfraRN {
       $objUnidadeGeradora = $this->consultarUnidade($dblIdProcedimento);
       if(isset($objUnidadeGeradora)){
         $objProcesso->produtor->unidade = new stdClass();
-        $objProcesso->produtor->unidade->nome = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objUnidadeGeradora->getStrDescricao(), 150));
+        $objProcesso->produtor->unidade->nome = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objUnidadeGeradora->getStrDescricao(), 150), 'UTF-8', 'ISO-8859-1');
         $objProcesso->produtor->unidade->tipo = self::STA_TIPO_PESSOA_ORGAOPUBLICO;
         //TODO: Informar dados da estrutura organizacional (estruturaOrganizacional)
       }
@@ -880,7 +880,7 @@ class ExpedirProcedimentoRN extends InfraRN {
 
         foreach ($arrParticipantesDTO as $participanteDTO) {
           $interessado = new stdClass();
-          $interessado->nome = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($participanteDTO->getStrNomeContato(), 150));
+          $interessado->nome = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($participanteDTO->getStrNomeContato(), 150), 'UTF-8', 'ISO-8859-1');
           $objProcesso->interessado[] = $interessado;
         }
       }
@@ -922,7 +922,7 @@ class ExpedirProcedimentoRN extends InfraRN {
         $strDescricaoDocumento = ($boolDocumentoRecebidoComNumero) ? $documentoDTO->getStrNumero() : "***";
 
         $documento->ordem = $ordem + 1;
-        $documento->descricao = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($strDescricaoDocumento, 100));
+        $documento->descricao = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($strDescricaoDocumento, 100), 'UTF-8', 'ISO-8859-1');
         $documento->retirado = ($documentoDTO->getStrStaEstadoProtocolo() == ProtocoloRN::$TE_DOCUMENTO_CANCELADO) ? true : false;
         $documento->nivelDeSigilo = $this->obterNivelSigiloPEN($documentoDTO->getStrStaNivelAcessoLocalProtocolo());
 
@@ -947,7 +947,7 @@ class ExpedirProcedimentoRN extends InfraRN {
         $documento->produtor = new stdClass();
         $usuarioDTO = $this->consultarUsuario($documentoDTO->getNumIdUsuarioGeradorProtocolo());
         if(isset($usuarioDTO)) {
-          $documento->produtor->nome = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($usuarioDTO->getStrNome(), 150));
+          $documento->produtor->nome = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($usuarioDTO->getStrNome(), 150), 'UTF-8', 'ISO-8859-1');
           $documento->produtor->numeroDeIdentificacao = $usuarioDTO->getDblCpfContato();
           //TODO: Obter tipo de pessoa fsica dos contextos/contatos do SEI
           $documento->produtor->tipo = self::STA_TIPO_PESSOA_FISICA;
@@ -957,7 +957,7 @@ class ExpedirProcedimentoRN extends InfraRN {
         $unidadeDTO = $this->consultarUnidade($documentoDTO->getNumIdUnidadeResponsavel());
         if(isset($unidadeDTO)) {
           $documento->produtor->unidade = new stdClass();
-          $documento->produtor->unidade->nome = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($unidadeDTO->getStrDescricao(), 150));
+          $documento->produtor->unidade->nome = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($unidadeDTO->getStrDescricao(), 150), 'UTF-8', 'ISO-8859-1');
           $documento->produtor->unidade->tipo = self::STA_TIPO_PESSOA_ORGAOPUBLICO;
           //TODO: Informar dados da estrutura organizacional (estruturaOrganizacional)
         }
@@ -986,7 +986,7 @@ class ExpedirProcedimentoRN extends InfraRN {
 
             $documento->componenteDigital = new stdClass();
             $documento->componenteDigital->ordem = 1;
-            $documento->componenteDigital->nome = utf8_encode($componenteDigital->getStrNome());
+            $documento->componenteDigital->nome = mb_convert_encoding($componenteDigital->getStrNome(), 'UTF-8', 'ISO-8859-1');
             $documento->componenteDigital->hash = new SoapVar("<hash algoritmo='{$componenteDigital->getStrAlgoritmoHash()}'>{$componenteDigital->getStrHashConteudo()}</hash>", XSD_ANYXML);
             $documento->componenteDigital->tamanhoEmBytes = $componenteDigital->getNumTamanho();
             $documento->componenteDigital->mimeType = $componenteDigital->getStrMimeType();
@@ -1069,7 +1069,7 @@ class ExpedirProcedimentoRN extends InfraRN {
 
       if($objComponenteDigitalDTO != null){
         $numCodigoEspecie = $objComponenteDigitalDTO->getNumCodigoEspecie();
-        $strNomeEspecieProdutor = utf8_encode($objComponenteDigitalDTO->getStrNomeEspecieProdutor());
+        $strNomeEspecieProdutor = mb_convert_encoding($objComponenteDigitalDTO->getStrNomeEspecieProdutor(), 'UTF-8', 'ISO-8859-1');
       }
 
       //Caso a informação sobre mapeamento esteja nulo, necessário buscar tal informação no Barramento
@@ -1098,7 +1098,7 @@ class ExpedirProcedimentoRN extends InfraRN {
           //Atribui espécie documental definida pelo produtor do documento e registrado no PEN, caso exista
           if(count($arrMetaDocumentosAnteriorIndexado) > 0 && array_key_exists($parMetaDocumento->ordem, $arrMetaDocumentosAnteriorIndexado)){
             $numCodigoEspecie = $arrMetaDocumentosAnteriorIndexado[$parMetaDocumento->ordem]->especie->codigo;
-            $strNomeEspecieProdutor = utf8_encode($arrMetaDocumentosAnteriorIndexado[$parMetaDocumento->ordem]->especie->nomeNoProdutor);
+            $strNomeEspecieProdutor = mb_convert_encoding($arrMetaDocumentosAnteriorIndexado[$parMetaDocumento->ordem]->especie->nomeNoProdutor, 'UTF-8', 'ISO-8859-1');
           }
         }
       }
@@ -1106,7 +1106,7 @@ class ExpedirProcedimentoRN extends InfraRN {
       //Aplica o mapeamento de espécies definida pelo administrador para os novos documentos
       if($numCodigoEspecie == null) {
         $numCodigoEspecie = $this->obterEspecieMapeada($parDocumentoDTO->getNumIdSerie());
-        $strNomeEspecieProdutor = utf8_encode($parDocumentoDTO->getStrNomeSerie());
+        $strNomeEspecieProdutor = mb_convert_encoding($parDocumentoDTO->getStrNomeSerie(), 'UTF-8', 'ISO-8859-1');
       }
 
       $parMetaDocumento->especie = new stdClass();
@@ -1192,7 +1192,7 @@ class ExpedirProcedimentoRN extends InfraRN {
         //TODO: Revisar tal implementação para atender a gerao de hash de arquivos grandes
         $objComponenteDigital = new stdClass();
         $objComponenteDigital->ordem = $numOrdemComponente;
-        $objComponenteDigital->nome = utf8_encode($objDadosArquivos["NOME"]);
+        $objComponenteDigital->nome = mb_convert_encoding($objDadosArquivos["NOME"], 'UTF-8', 'ISO-8859-1');
         $objComponenteDigital->hash = new SoapVar("<hash algoritmo='{$strAlgoritmoHash}'>{$hashDoComponenteDigital}</hash>", XSD_ANYXML);
         $objComponenteDigital->tamanhoEmBytes = $objDadosArquivos['TAMANHO'];
 
@@ -1277,8 +1277,8 @@ class ExpedirProcedimentoRN extends InfraRN {
         $objAtividade = $objAtividadeRN->consultarRN0033($objAtividadeDTO);
 
         $objAssinaturaDigital = new stdClass();
-        $objAssinaturaDigital->razao = utf8_encode($dataTarjas[$keyOrder]);
-        $objAssinaturaDigital->observacao = utf8_encode($dataTarjas[count($dataTarjas) - 1]);
+        $objAssinaturaDigital->razao = mb_convert_encoding($dataTarjas[$keyOrder], 'UTF-8', 'ISO-8859-1');
+        $objAssinaturaDigital->observacao = mb_convert_encoding($dataTarjas[count($dataTarjas) - 1], 'UTF-8', 'ISO-8859-1');
         $objAssinaturaDigital->dataHora = $this->objProcessoEletronicoRN->converterDataWebService($objAtividade->getDthAbertura());
 
         if($assinatura->getStrStaFormaAutenticacao() == AssinaturaRN::$TA_CERTIFICADO_DIGITAL){
@@ -1753,27 +1753,27 @@ class ExpedirProcedimentoRN extends InfraRN {
 
       if($strStaNumeracao == SerieRN::$TN_SEQUENCIAL_UNIDADE) {
         $objDocumento->identificacao = new stdClass();
-        $objDocumento->identificacao->numero = utf8_encode($parObjDocumentoDTO->getStrNumero());
-        $objDocumento->identificacao->siglaDaUnidadeProdutora = utf8_encode($parObjDocumentoDTO->getStrSiglaUnidadeGeradoraProtocolo());
-        $objDocumento->identificacao->complemento = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($parObjDocumentoDTO->getStrDescricaoUnidadeGeradoraProtocolo(), 100));
+        $objDocumento->identificacao->numero = mb_convert_encoding($parObjDocumentoDTO->getStrNumero(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->siglaDaUnidadeProdutora = mb_convert_encoding($parObjDocumentoDTO->getStrSiglaUnidadeGeradoraProtocolo(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->complemento = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($parObjDocumentoDTO->getStrDescricaoUnidadeGeradoraProtocolo(), 100), 'UTF-8', 'ISO-8859-1');
       }else if($strStaNumeracao == SerieRN::$TN_SEQUENCIAL_ORGAO){
         $objOrgaoDTO = $this->consultarOrgao($parObjDocumentoDTO->getNumIdOrgaoUnidadeGeradoraProtocolo());
         $objDocumento->identificacao = new stdClass();
-        $objDocumento->identificacao->numero = utf8_encode($parObjDocumentoDTO->getStrNumero());
-        $objDocumento->identificacao->siglaDaUnidadeProdutora = utf8_encode($objOrgaoDTO->getStrSigla());
-        $objDocumento->identificacao->complemento = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objOrgaoDTO->getStrDescricao(), 100));
+        $objDocumento->identificacao->numero = mb_convert_encoding($parObjDocumentoDTO->getStrNumero(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->siglaDaUnidadeProdutora = mb_convert_encoding($objOrgaoDTO->getStrSigla(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->complemento = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objOrgaoDTO->getStrDescricao(), 100), 'UTF-8', 'ISO-8859-1');
       }else if($strStaNumeracao == SerieRN::$TN_SEQUENCIAL_ANUAL_UNIDADE){
         $objDocumento->identificacao = new stdClass();
-        $objDocumento->identificacao->siglaDaUnidadeProdutora = utf8_encode($parObjDocumentoDTO->getStrSiglaUnidadeGeradoraProtocolo());
-        $objDocumento->identificacao->complemento = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($parObjDocumentoDTO->getStrDescricaoUnidadeGeradoraProtocolo(), 100));
-        $objDocumento->identificacao->numero = utf8_encode($parObjDocumentoDTO->getStrNumero());
+        $objDocumento->identificacao->siglaDaUnidadeProdutora = mb_convert_encoding($parObjDocumentoDTO->getStrSiglaUnidadeGeradoraProtocolo(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->complemento = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($parObjDocumentoDTO->getStrDescricaoUnidadeGeradoraProtocolo(), 100), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->numero = mb_convert_encoding($parObjDocumentoDTO->getStrNumero(), 'UTF-8', 'ISO-8859-1');
         $objDocumento->identificacao->ano = substr($parObjDocumentoDTO->getDtaGeracaoProtocolo(), 6, 4);
       }else if($strStaNumeracao == SerieRN::$TN_SEQUENCIAL_ANUAL_ORGAO){
         $objOrgaoDTO = $this->consultarOrgao($parObjDocumentoDTO->getNumIdOrgaoUnidadeGeradoraProtocolo());
         $objDocumento->identificacao = new stdClass();
-        $objDocumento->identificacao->numero = utf8_encode($parObjDocumentoDTO->getStrNumero());
-        $objDocumento->identificacao->siglaDaUnidadeProdutora = utf8_encode($objOrgaoDTO->getStrSigla());
-        $objDocumento->identificacao->complemento = utf8_encode($this->objProcessoEletronicoRN->reduzirCampoTexto($objOrgaoDTO->getStrDescricao(), 100));
+        $objDocumento->identificacao->numero = mb_convert_encoding($parObjDocumentoDTO->getStrNumero(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->siglaDaUnidadeProdutora = mb_convert_encoding($objOrgaoDTO->getStrSigla(), 'UTF-8', 'ISO-8859-1');
+        $objDocumento->identificacao->complemento = mb_convert_encoding($this->objProcessoEletronicoRN->reduzirCampoTexto($objOrgaoDTO->getStrDescricao(), 100), 'UTF-8', 'ISO-8859-1');
         $objDocumento->identificacao->ano = substr($parObjDocumentoDTO->getDtaGeracaoProtocolo(), 6, 4);
       }
     }
@@ -2709,7 +2709,7 @@ class ExpedirProcedimentoRN extends InfraRN {
           if (!array_key_exists($strAtributo, $arrErros)) {
             $arrErros[$strAtributo] = array();
           }
-          $arrErros[$strAtributo][] = utf8_encode($objInfraValidacao->getStrDescricao());
+          $arrErros[$strAtributo][] = mb_convert_encoding($objInfraValidacao->getStrDescricao(), 'UTF-8', 'ISO-8859-1');
           $message .= $objInfraValidacao->getStrDescricao() . "\n";
         }
 
