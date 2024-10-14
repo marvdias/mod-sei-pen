@@ -76,7 +76,7 @@ class FixtureCenarioBaseTestCase extends CenarioBaseTestCase
         return $objProtocoloDTO;
     }
 
-    protected function cadastrarDocumentoInternoFixture($dadosDocumentoInterno, $idProtocolo)
+    protected function cadastrarDocumentoInternoFixture($dadosDocumentoInterno, $idProtocolo, $assinarDocumento = true)
     {
 
         $dadosDocumentoDTO = [
@@ -96,12 +96,14 @@ class FixtureCenarioBaseTestCase extends CenarioBaseTestCase
         $objDocumentoFixture = new DocumentoFixture();
         $objDocumentoDTO = $objDocumentoFixture->carregar($dadosDocumentoDTO);
 
-        //Adicionar assinatura ao documento
-        $objAssinaturaFixture = new AssinaturaFixture();
-        $objAssinaturaFixture->carregar([
-            'IdProtocolo' => $idProtocolo,
-            'IdDocumento' => $objDocumentoDTO->getDblIdDocumento(),
-        ]);
+        if ($assinarDocumento) {
+            //Adicionar assinatura ao documento
+            $objAssinaturaFixture = new AssinaturaFixture();
+            $objAssinaturaFixture->carregar([
+                'IdProtocolo' => $idProtocolo,
+                'IdDocumento' => $objDocumentoDTO->getDblIdDocumento(),
+            ]);
+        }
 
         return $objDocumentoDTO;
 
