@@ -14,11 +14,13 @@ class ComponenteDigitalBD extends InfraBD {
      * @param TramiteDTO $parObjTramiteDTO
      * @return void
      */
-  public function listarComponentesDigitaisPeloTramite($numIdTramite, $dblIdDocumento = null)
+    public function listarComponentesDigitaisPeloTramite($numIdTramite, $dblIdDocumento = null)
     {
     if(is_null($numIdTramite)){
         throw new InfraException('Módulo do Tramita: Parâmetro [parObjTramiteDTO] não informado');
     }
+
+      // Codigo adicionado para resolução do chamado IBAMA 22778580
       $objRelProtocoloProtocoloDTO = new RelProtocoloProtocoloDTO();
       $objRelProtocoloProtocoloDTO->setStrStaAssociacao(RelProtocoloProtocoloRN::$TA_DOCUMENTO_MOVIDO, InfraDTO::$OPER_DIFERENTE);
       $objRelProtocoloProtocoloDTO->setDblIdProtocolo2($dblIdDocumento);
@@ -27,6 +29,8 @@ class ComponenteDigitalBD extends InfraBD {
       $objRelProtocoloProtocoloRN = new RelProtocoloProtocoloRN();
       $arrObjRelProtocoloProtocoloDTO = $objRelProtocoloProtocoloRN->listarRN0187($objRelProtocoloProtocoloDTO);
 
+      // $arrOrdem guarda a ordem/sequencia em que os documentos que são
+      // diferentes da associação de 'movido'
       $arrOrdem = [];
       foreach ($arrObjRelProtocoloProtocoloDTO as $dto){
         $arrOrdem[] = $dto->getNumSequencia() + 1;
@@ -47,6 +51,7 @@ class ComponenteDigitalBD extends InfraBD {
       $objComponenteDigitalPesquisaDTO->retNumOrdemDocumentoAnexado();
       $objComponenteDigitalPesquisaDTO->retNumOrdem();
       $objComponenteDigitalPesquisaDTO->setNumIdTramite($numIdTramite);
+      // Caso haja documentos não movidos identificados, eles são filtrados no campo abaixo:
       if (!empty($arrOrdem)){
         $objComponenteDigitalPesquisaDTO->setNumOrdemDocumento($arrOrdem, InfraDTO::$OPER_IN);
       }
