@@ -1,5 +1,8 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /* Resumo:
 Cria processo no org1
     cria um doc externo
@@ -19,7 +22,7 @@ Org1 envia novamente pro Org2, sem anexar nada;
  * a devolução do mesmo processo não deve ser impactado pela inserção de outros documentos
  *
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenarioBaseTestCase
 {
@@ -37,10 +40,10 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
     /**
      * Teste inicial de trâmite de um processo contendo um documento movido
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -98,16 +101,18 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
 
         $this->abrirProcesso(self::$protocoloTesteFormatado);
 
-        
-        $this->waitUntil(function ($testCase) {
-            sleep(5);
-            $testCase->refresh();
-            $paginaProcesso = new PaginaProcesso($testCase);
-            $testCase->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $paginaProcesso->informacao());
-            $testCase->assertFalse($paginaProcesso->processoAberto());
-            $testCase->assertTrue($paginaProcesso->processoBloqueado());
+        $this->waitUntil(function() {
+          sleep(5);
+          $this->paginaBase->refresh();
+        try { 
+            $this->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $this->paginaProcesso->informacao());
+            $this->assertFalse($this->paginaProcesso->processoAberto());
+            $this->assertTrue($this->paginaProcesso->processoBloqueado());
             return true;
-        }, PEN_WAIT_TIMEOUT);
+        } catch (AssertionFailedError $e) {
+            return false;
+        }
+      }, PEN_WAIT_TIMEOUT);
 
         $unidade = mb_convert_encoding(self::$destinatario['NOME_UNIDADE'], "ISO-8859-1");
         $mensagemRecibo = sprintf("Trâmite externo do Processo %s para %s", self::$protocoloTesteFormatado, $unidade);
@@ -121,10 +126,10 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
      /**
      * Teste de devolução do processo recebido no destinatário
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_contendo_documento_movido
+     * #[Depends('test_tramitar_processo_contendo_documento_movido')]
      *
      * @return void
      */
@@ -143,15 +148,18 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
 
         $this->abrirProcesso(self::$protocoloTesteFormatado);
 
-        $this->waitUntil(function ($testCase) {
-            sleep(5);
-            $testCase->refresh();
-            $paginaProcesso = new PaginaProcesso($testCase);
-            $testCase->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $paginaProcesso->informacao());
-            $testCase->assertFalse($paginaProcesso->processoAberto());
-            $testCase->assertTrue($paginaProcesso->processoBloqueado());
+        $this->waitUntil(function() {
+          sleep(5);
+          $this->paginaBase->refresh();
+        try { 
+            $this->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $this->paginaProcesso->informacao());
+            $this->assertFalse($this->paginaProcesso->processoAberto());
+            $this->assertTrue($this->paginaProcesso->processoBloqueado());
             return true;
-        }, PEN_WAIT_TIMEOUT);       
+        } catch (AssertionFailedError $e) {
+            return false;
+        }
+      }, PEN_WAIT_TIMEOUT);  
     }   
 
 
@@ -159,10 +167,10 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
  /**
      * Teste de trâmite secundário do processo para destinatário
      *
-     * @group envio
-     * @large
-     * 
-     * @Depends test_somente_devolucao
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_somente_devolucao')]
      *
      * @return void
      */
@@ -181,15 +189,18 @@ class TramiteProcessoContendoDocumentoMovidoEnvioDuploTest extends FixtureCenari
 
         $this->abrirProcesso(self::$protocoloTesteFormatado);
 
-        $this->waitUntil(function ($testCase) {
-            sleep(5);
-            $testCase->refresh();
-            $paginaProcesso = new PaginaProcesso($testCase);
-            $testCase->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $paginaProcesso->informacao());
-            $testCase->assertFalse($paginaProcesso->processoAberto());
-            $testCase->assertTrue($paginaProcesso->processoBloqueado());
+        $this->waitUntil(function() {
+          sleep(5);
+          $this->paginaBase->refresh();
+        try { 
+            $this->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $this->paginaProcesso->informacao());
+            $this->assertFalse($this->paginaProcesso->processoAberto());
+            $this->assertTrue($this->paginaProcesso->processoBloqueado());
             return true;
-        }, PEN_WAIT_TIMEOUT);
+        } catch (AssertionFailedError $e) {
+            return false;
+        }
+      }, PEN_WAIT_TIMEOUT);
 
         $unidade = mb_convert_encoding(self::$destinatario['NOME_UNIDADE'], "ISO-8859-1");
         $mensagemRecibo = sprintf("Trâmite externo do Processo %s para %s", self::$protocoloTesteFormatado, $unidade);

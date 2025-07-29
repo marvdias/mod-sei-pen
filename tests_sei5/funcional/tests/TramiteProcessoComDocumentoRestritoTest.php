@@ -90,13 +90,12 @@ class TramiteProcessoComDocumentoRestritoTest extends FixtureCenarioBaseTestCase
     $this->paginaBase->pesquisar(self::$protocoloTeste->getStrProtocoloFormatado());
 
     // 6 - Verificar se situação atual do processo está como bloqueado
-    $this->waitUntil(function ($testCase) use (&$orgaosDiferentes) {
+    $this->waitUntil(function () {
       sleep(5);
-      $testCase->refresh();
-      $paginaProcesso = new PaginaProcesso($testCase);
-      $testCase->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $paginaProcesso->informacao());
-      $testCase->assertFalse($paginaProcesso->processoAberto());
-      $testCase->assertEquals($orgaosDiferentes, $paginaProcesso->processoBloqueado());
+      $this->paginaBase->refresh();
+      $this->assertStringNotContainsString(mb_convert_encoding("Processo em trâmite externo para ", 'UTF-8', 'ISO-8859-1'), $this->paginaProcesso->informacao());
+      $this->assertFalse($this->paginaProcesso->processoAberto());
+      $this->assertTrue($this->paginaProcesso->processoBloqueado());
       return true;
     }, PEN_WAIT_TIMEOUT);
 

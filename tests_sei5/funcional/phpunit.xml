@@ -4,10 +4,14 @@
   bootstrap="bootstrap.php"
   backupGlobals="true"
   colors="true"
-  verbose="true"
   cacheResult="false"
   stopOnError="false"
   stopOnFailure="false"
+  displayDetailsOnTestsThatTriggerDeprecations="true"
+  displayDetailsOnTestsThatTriggerErrors="true"
+  displayDetailsOnTestsThatTriggerNotices="true"
+  displayDetailsOnTestsThatTriggerWarnings="true"
+  displayDetailsOnPhpunitDeprecations="true"
 >
   <php>
     <const name="PHPUNIT_HOST" value="selenium" />
@@ -15,39 +19,36 @@
     <const name="PHPUNIT_BROWSER" value="chrome" />
     <const name="PHPUNIT_TESTS_URL" value="http://localhost/sei" />
     <const name="PEN_ENDERECO_WEBSERVICE"
-      value="https://homolog.api.processoeletronico.gov.br/interoperabilidade/rest/v3/" />
- 
+      value="https://dev.api.processoeletronico.gov.br/interoperabilidade/rest/v3/" />
+
     <!-- Chaves de configurações gerais do teste do Barramento de Serviços do PEN -->
-    <const name="PEN_WAIT_TIMEOUT" value="360000" />
-    <const name="PEN_WAIT_TIMEOUT_ARQUIVOS_GRANDES" value="7200000" />
-    <const name="PEN_WAIT_TIMEOUT_PROCESSAMENTO_EM_LOTE" value="10800000" />
+    <const name="PEN_WAIT_TIMEOUT" value="360" />
+    <const name="PEN_WAIT_TIMEOUT_ARQUIVOS_GRANDES" value="7200" />
+    <const name="PEN_WAIT_TIMEOUT_PROCESSAMENTO_EM_LOTE" value="10800" />
     <const name="PEN_SCRIPT_MONITORAMENTO_ORG1" value=" " />
     <const name="PEN_SCRIPT_MONITORAMENTO_ORG2" value=" " />
     <const name="ENVIO_PARCIAL" value="true" />
- 
-    <!-- Chaves de configuração dos diferentes ambientes envolvidos no teste do Barramento de
-    Serviços do PEN -->
-    <!-- CONFIGURAÇÕES DE TESTE ÓRGÃO 1 -->
+
+     <!-- CONFIGURAÇÕES DE TESTE ÓRGÃO 1 -->
     <const name="CONTEXTO_ORGAO_A" value="CONTEXTO_ORGAO_A" />
     <const name="CONTEXTO_ORGAO_A_URL" value="http://org1-http:8000/sei" />
     <const name="CONTEXTO_ORGAO_A_SIGLA_ORGAO" value="ABC" />
     <const name="CONTEXTO_ORGAO_A_NUMERO_SEI" value="951" />
-    <const name="CONTEXTO_ORGAO_A_ID_REP_ESTRUTURAS" value="5" />
+    <const name="CONTEXTO_ORGAO_A_ID_REP_ESTRUTURAS" value="26" />
     <const name="CONTEXTO_ORGAO_A_REP_ESTRUTURAS" value="RE CGSIS" />
     <const name="CONTEXTO_ORGAO_A_SIGLA_UNIDADE" value="TESTE" />
     <const name="CONTEXTO_ORGAO_A_ID_ESTRUTURA"
-      value="INFORME_O_ID_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG1" />
+      value="162282" />
     <const name="CONTEXTO_ORGAO_A_SIGLA_ESTRUTURA"
-      value="INFORME_A_SIGLA_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG1" />
+      value="MARCUS_FIRST_ORG_1" />
     <const name="CONTEXTO_ORGAO_A_SIGLA_UNIDADE_HIERARQUIA" value="" />
     <const name="CONTEXTO_ORGAO_A_NOME_UNIDADE"
-      value="INFORME_O_NOME_DA_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG1" />
+      value="MARCUS_FIRST_ORG_1" />
     <const name="CONTEXTO_ORGAO_A_SIGLA_UNIDADE_SECUNDARIA" value="TESTE_1_1" />
     <const name="CONTEXTO_ORGAO_A_ID_ESTRUTURA_SECUNDARIA"
-      value="INFORME_O_ID_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG_1_1" />
-    <const name="CONTEXTO_ORGAO_A_NOME_UNIDADE_SECUNDARIA"
-      value="INFORME_O_NOME_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG_1_1" />
-    <const name="CONTEXTO_ORGAO_A_SIGLA_UNIDADE_SECUNDARIA_HIERARQUIA" value="" />
+      value="162283" />
+    <const name="CONTEXTO_ORGAO_A_NOME_UNIDADE_SECUNDARIA" value="MARCUS_FIRST_ORG_1_F" />
+    <const name="CONTEXTO_ORGAO_A_SIGLA_UNIDADE_SECUNDARIA_HIERARQUIA" value="MARCUS_FIRST_ORG_1_F" />
     <const name="CONTEXTO_ORGAO_A_USUARIO_LOGIN" value="teste" />
     <const name="CONTEXTO_ORGAO_A_USUARIO_SENHA" value="teste" />
     <const name="CONTEXTO_ORGAO_A_TIPO_PROCESSO" value="Arrecadação: Cobrança" />
@@ -76,16 +77,15 @@
     <const name="CONTEXTO_ORGAO_B_URL" value="http://org2-http:8000/sei" />
     <const name="CONTEXTO_ORGAO_B_SIGLA_ORGAO" value="ABC" />
     <const name="CONTEXTO_ORGAO_B_NUMERO_SEI" value="179" />
-    <const name="CONTEXTO_ORGAO_B_ID_REP_ESTRUTURAS" value="5" />
+    <const name="CONTEXTO_ORGAO_B_ID_REP_ESTRUTURAS" value="26" />
     <const name="CONTEXTO_ORGAO_B_REP_ESTRUTURAS" value="RE CGSIS" />
     <const name="CONTEXTO_ORGAO_B_SIGLA_UNIDADE" value="TESTE" />
-    <const name="CONTEXTO_ORGAO_B_ID_ESTRUTURA"
-      value="INFORME_O_ID_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG2" />
+    <const name="CONTEXTO_ORGAO_B_ID_ESTRUTURA" value="162284" />
     <const name="CONTEXTO_ORGAO_B_SIGLA_ESTRUTURA"
-      value="INFORME_A_SIGLA_DE_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG2" />
+      value="MARCUS_FIRST_ORG_2" />
     <const name="CONTEXTO_ORGAO_B_SIGLA_UNIDADE_HIERARQUIA" value="" />
     <const name="CONTEXTO_ORGAO_B_NOME_UNIDADE"
-      value="INFORME_O_NOME_DA_ESTRUTURA_UTILIZADO_PARA_TESTE_ORG2" />
+      value="MARCUS_FIRST_ORG_2" />
     <const name="CONTEXTO_ORGAO_B_USUARIO_LOGIN" value="teste" />
     <const name="CONTEXTO_ORGAO_B_USUARIO_SENHA" value="teste" />
     <const name="CONTEXTO_ORGAO_B_ID_ESTRUTURA_SECUNDARIA" value="XXXXXXXXXXXXXX" />

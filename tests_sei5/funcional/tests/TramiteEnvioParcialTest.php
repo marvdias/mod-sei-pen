@@ -79,9 +79,9 @@ class TramiteEnvioParcialTest extends FixtureCenarioBaseTestCase
     );
 
     $this->paginaBase->navegarParaControleProcesso();
-    $this->waitUntil(function ($testCase) use ($strProtocoloTeste) {
+    $this->waitUntil(function () use ($strProtocoloTeste) {
         sleep(5);
-        $testCase->refresh();
+        $this->paginaBase->refresh();
         $this->paginaControleProcesso->abrirProcesso($strProtocoloTeste);
         return true;
     }, PEN_WAIT_TIMEOUT);
@@ -166,7 +166,7 @@ class TramiteEnvioParcialTest extends FixtureCenarioBaseTestCase
     $this->paginaBase->navegarParaControleProcesso();
     $this->waitUntil(function ($testCase) use ($strProtocoloTeste) {
         sleep(5);
-        $testCase->refresh();
+        $this->paginaBase->refresh();
         $this->paginaControleProcesso->abrirProcesso($strProtocoloTeste);
         return true;
     }, PEN_WAIT_TIMEOUT);
