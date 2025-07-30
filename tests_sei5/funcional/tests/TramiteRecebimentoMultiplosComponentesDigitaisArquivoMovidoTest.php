@@ -85,8 +85,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisArquivoMovidoTest extends Fi
     /**
      * Teste mover documento com múltiplos componentes digitais para outro processo
      *
-     * @depends test_recebimento_processo_com_multiplos_componentes_digitais
-     *
+     * #[Depends('test_recebimento_processo_com_multiplos_componentes_digitais')]
      * @return void
      */
     public function test_mover_documento_com_multiplos_componentes_digitais_para_outro_processo()
@@ -123,8 +122,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisArquivoMovidoTest extends Fi
     /**
      * Testa envio processo com múltiplos componentes digitais movido
      *
-     * @depends test_mover_documento_com_multiplos_componentes_digitais_para_outro_processo
-     *
+     * #[Depends('test_mover_documento_com_multiplos_componentes_digitais_para_outro_processo')]
      * @return void
      */
     public function test_envio_processo_com_multiplos_componentes_digitais_movido()

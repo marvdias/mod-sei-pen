@@ -1,11 +1,14 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+
 /**
  * Testes de mapeamento de tipos de processo e relacionamento entre orgãos
  * Desativar e reativar mapeamento entre orgãos
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class MapeamentoTipoProcessoDesativarReativarTest extends FixtureCenarioBaseTestCase
 {
@@ -40,7 +43,7 @@ class MapeamentoTipoProcessoDesativarReativarTest extends FixtureCenarioBaseTest
     /**
      * Teste de desativação de um Relacionamento entre Órgãos
      *
-     * @large
+     * #[Large]
      *
      * @return void
      */
@@ -76,7 +79,7 @@ class MapeamentoTipoProcessoDesativarReativarTest extends FixtureCenarioBaseTest
     /**
      * Teste de reativação de um Relacionamento entre Órgãos
      * 
-     * @large
+     * #[Large]
      *
      * @return void
      */
@@ -114,7 +117,7 @@ class MapeamentoTipoProcessoDesativarReativarTest extends FixtureCenarioBaseTest
     /**
      * Teste de desativação de um Relacionamento entre Órgãos via checkbox
      *
-     * @large
+     * #[Large]
      *
      * @return void
      */
@@ -150,7 +153,7 @@ class MapeamentoTipoProcessoDesativarReativarTest extends FixtureCenarioBaseTest
     /**
      * Teste de desativação de um Relacionamento entre Órgãos via checkbox
      *
-     * @large
+     * #[Large]
      *
      * @return void
      */

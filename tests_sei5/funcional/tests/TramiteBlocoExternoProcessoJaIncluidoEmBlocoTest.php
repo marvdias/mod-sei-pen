@@ -1,10 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  * Teste de inclusão de processo em bloco
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class TramiteBlocoExternoProcessoJaIncluidoEmBlocoTest extends FixtureCenarioBaseTestCase
 {

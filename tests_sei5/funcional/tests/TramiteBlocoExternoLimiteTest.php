@@ -1,10 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  * Teste de tramite de processos em bloco
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class TramiteBlocoExternoLimiteTest extends FixtureCenarioBaseTestCase
 {

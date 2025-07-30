@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 class TramiteProcessoUnidadeSemHierarquiaPaiTest extends FixtureCenarioBaseTestCase
 {
   public static $remetente;
@@ -11,10 +13,10 @@ class TramiteProcessoUnidadeSemHierarquiaPaiTest extends FixtureCenarioBaseTestC
     /**
      * Teste de trâmite externo de processo sem devolução para testar caso de hierarquia sem pai
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */

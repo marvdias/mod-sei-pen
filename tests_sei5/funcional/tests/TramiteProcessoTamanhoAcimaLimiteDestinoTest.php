@@ -1,9 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * 
  * Execution Groups
- * @group execute_alone_group3
+ * #[Group('execute_alone_group3')]
  */
 class TramiteProcessoTamanhoAcimaLimiteDestinoTest extends FixtureCenarioBaseTestCase
 {
@@ -39,10 +42,10 @@ class TramiteProcessoTamanhoAcimaLimiteDestinoTest extends FixtureCenarioBaseTes
     /**
      * Teste de trâmite externo de processo contendo documento com tamanho acima do limite no destinatario
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -74,10 +77,10 @@ class TramiteProcessoTamanhoAcimaLimiteDestinoTest extends FixtureCenarioBaseTes
     /**
      * Teste de verificação do correto envio do processo no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_tamanho_acima_limite_destino
+     * #[Depends('test_tramitar_processo_tamanho_acima_limite_destino')]
      *
      * @return void
      */
@@ -123,10 +126,10 @@ class TramiteProcessoTamanhoAcimaLimiteDestinoTest extends FixtureCenarioBaseTes
     /**
      * Teste de verificação do correto recebimento do processo contendo apenas um documento interno (gerado)
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_tamanho_acima_limite_destino
+     * #[Depends('test_verificar_origem_processo_tamanho_acima_limite_destino')]
      *
      * @return void
      */

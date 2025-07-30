@@ -1,6 +1,7 @@
 <?php
 
 use Facebook\WebDriver\WebDriverBy;
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * Blocos não tramitados devem possuir estado "Aberto".
@@ -63,7 +64,7 @@ class TramiteProcessoBlocoDeTramitePermissoesTest extends FixtureCenarioBaseTest
 
     /**
      * Troca ordenação de documento para ao tramitar obter status cancelado
-     * @depends test_tramite_contendo_documento_interno
+     * #[Depends('test_tramite_contendo_documento_interno')]
      */
   public function test_trocar_ordenacao_documento()
     {
@@ -115,7 +116,7 @@ class TramiteProcessoBlocoDeTramitePermissoesTest extends FixtureCenarioBaseTest
 
     /**
      * Inclui processos ao bloco de tramite, excluir e adiciona novamente
-     * @depends test_trocar_ordenacao_documento
+     * #[Depends('test_trocar_ordenacao_documento')]
      */
   public function test_criar_excluir_processos_em_bloco_externo()
     {
@@ -202,7 +203,8 @@ class TramiteProcessoBlocoDeTramitePermissoesTest extends FixtureCenarioBaseTest
 
     /**
      * Tramitar bloco externamente
-     * @depends test_criar_excluir_processos_em_bloco_externo
+     * #[Depends('test_criar_excluir_processos_em_bloco_externo')]
+     * 
      */
   public function test_tramite_bloco_externo()
     {
@@ -238,7 +240,7 @@ class TramiteProcessoBlocoDeTramitePermissoesTest extends FixtureCenarioBaseTest
 
     /**
      * Verificar se o bloco foi enviado
-     * @depends test_tramite_bloco_externo
+     * #[Depends('test_tramite_bloco_externo')]
      * @return void
      */
   public function test_verificar_envio_processo()
@@ -275,7 +277,7 @@ class TramiteProcessoBlocoDeTramitePermissoesTest extends FixtureCenarioBaseTest
   }
     /**
      * Verificar se é possivel excluir processos do bloco após tramite
-     * @depends test_verificar_envio_processo
+     * #[Depends('test_verificar_envio_processo')]
      * @return void
      */
   public function test_verificar_possivel_exclusao_processo_bloco()

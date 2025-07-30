@@ -1,5 +1,8 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * Testes de trâmite de um processo tendo a sua devolução através de sua anexação à outro processo
  * criado no órgão de destino.
@@ -8,7 +11,7 @@
  * seja reaberto, atualizado e anexado ao novo processo recem criado
  *
  * Execution Groups
- * @group execute_alone_group5
+ * #[Group('execute_alone_group5')]
  */
 class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTestCase
 {
@@ -30,10 +33,10 @@ class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTest
      *
      * Posteriormente os dois serão anexados e enviados de volta
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -57,10 +60,10 @@ class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTest
     /**
      * Teste de verificação do correto recebimento do processo no destino
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_da_origem
+     * #[Depends('test_tramitar_processo_da_origem')]
      *
      * @return void
      */
@@ -74,10 +77,10 @@ class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTest
     /**
      * Teste de trâmite externo de processo realizando a anexação e a devolução para a mesma unidade de origem
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
-     * @depends test_verificar_recebimento_processo_destino
+     * #[Depends('test_verificar_recebimento_processo_destino')]
      *
      * @return void
      */
@@ -132,10 +135,10 @@ class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTest
     /**
      * Teste de verificação do correto envio do processo anexado no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_devolucao_processo_anexado_em_outro_para_origem
+     * #[Depends('test_devolucao_processo_anexado_em_outro_para_origem')]
      *
      * @return void
      */
@@ -168,10 +171,10 @@ class TramiteProcessoComDevolucaoAnexadoOutroTest extends FixtureCenarioBaseTest
     /**
      * Teste de verificação da correta devolução do processo anexado no destinatário
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_devolucao_origem_processo_anexado
+     * #[Depends('test_verificar_devolucao_origem_processo_anexado')]
      *
      * @return void
      */

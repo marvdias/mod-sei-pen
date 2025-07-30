@@ -1,8 +1,11 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteProcessoContendoDocumentoGeradoMesmoOrgaoTest extends FixtureCenarioBaseTestCase
 {
@@ -16,7 +19,7 @@ class TramiteProcessoContendoDocumentoGeradoMesmoOrgaoTest extends FixtureCenari
      * Test tramitar processo contendo documento gerado
      * 
      * @Depends CenarioBaseTestCase::setUpBeforeClass
-     * @large
+     * #[Large]
      *
      * @return void
      */
@@ -38,8 +41,8 @@ class TramiteProcessoContendoDocumentoGeradoMesmoOrgaoTest extends FixtureCenari
   }
 
     /**
-     * @depends test_tramitar_processo_contendo_documento_gerado
-     * @large
+     * #[Depends('test_tramitar_processo_contendo_documento_gerado')]
+     * #[Large]
      */
   public function test_verificar_origem_processo_contendo_documento_gerado()
     {
@@ -77,8 +80,8 @@ class TramiteProcessoContendoDocumentoGeradoMesmoOrgaoTest extends FixtureCenari
 
 
     /**
-     * @depends test_verificar_origem_processo_contendo_documento_gerado
-     * @large
+     * #[Depends('test_verificar_origem_processo_contendo_documento_gerado')]
+     * #[Large]
      */
   public function test_verificar_destino_processo_contendo_documento_gerado()
     {

@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 class TramiteProcessoGestorNaoResponsavelPelaUnidadeMapeadaTest extends FixtureCenarioBaseTestCase
 {
     public static $remetente;

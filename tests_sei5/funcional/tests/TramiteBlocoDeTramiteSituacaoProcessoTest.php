@@ -1,9 +1,11 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  *
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteBlocoDeTramiteSituacaoProcessoTest extends FixtureCenarioBaseTestCase
 {
@@ -14,8 +16,8 @@ class TramiteBlocoDeTramiteSituacaoProcessoTest extends FixtureCenarioBaseTestCa
     /**
      * Teste pra validar mensagem de documento não assinado ao ser inserido em bloco
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
      * @return void
      */

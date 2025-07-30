@@ -5,7 +5,7 @@ use PHPUnit\Framework\Attributes\{Group,Large,Depends};
 
 /**
  * Execution Groups
- * @group execute_alone_group4
+ * #[Group('execute_alone_group4')]
  */
 class RecebimentoRecusaJustificativaGrandeTest extends FixtureCenarioBaseTestCase
 {
@@ -34,7 +34,7 @@ class RecebimentoRecusaJustificativaGrandeTest extends FixtureCenarioBaseTestCas
     /**
      * Teste de trâmite externo de processo com devolução para a mesma unidade de origem
      *
-     * @group envio
+     * #[Group('envio')]
      *
      * @return void
      */
@@ -66,9 +66,9 @@ class RecebimentoRecusaJustificativaGrandeTest extends FixtureCenarioBaseTestCas
     /**
      * Teste de verificação do correto recebimento do processo no destinatário
      *
-     * @group verificacao_recebimento
+     * #[Group('verificacao_recebimento')]
      *
-     * @depends test_tramitar_processo_da_origem
+     * #[Depends('test_tramitar_processo_da_origem')]
      *
      * @return void
      */

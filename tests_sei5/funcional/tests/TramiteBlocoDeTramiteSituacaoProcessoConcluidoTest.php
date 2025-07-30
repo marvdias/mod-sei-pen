@@ -1,9 +1,11 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  *
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioBaseTestCase
 {
@@ -14,8 +16,8 @@ class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioB
     /**
      * Teste pra validar mensagem de documento não assinado ao ser inserido em bloco
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
      * @return void
      */
@@ -65,12 +67,33 @@ class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioB
       }
     );
 
-    $this->waitUntil(function() use ($objProtocoloDTO) {
+    $estadoEsperado = mb_convert_encoding('Concluído', 'UTF-8', 'ISO-8859-1');
+
+    $this->waitUntil(function() use ($objProtocoloDTO, $estadoEsperado) {
       sleep(5);
       $this->paginaBase->refresh();
-      $colunaEstado = $this->paginaBase->elementsByXPath('//table[@id="tblBlocos"]/tbody/tr/td[3]');
-      $this->assertEquals(mb_convert_encoding("Concluído", 'UTF-8', 'ISO-8859-1'), $colunaEstado[0]->getText());
 
+      $colunasEstado = $this->paginaCadastrarProcessoEmBloco->elementsByXPath('//table[@id="tblBlocos"]/tbody/tr/td[3]');
+      // se não houver nenhuma célula, continua esperando
+      if (count($colunasEstado) === 0) {
+          return false;
+      }
+        
+       // verifica se o texto da primeira célula contém o estado esperado
+      if (mb_strpos($colunasEstado[0]->getText(), $estadoEsperado) === false) {
+          return false;
+      }
+      $this->assertEquals($estadoEsperado, $colunasEstado[0]->getText());
+        
+      $objBlocoDeTramiteProtocoloFixture = new \BlocoDeTramiteProtocoloFixture();
+      $objBlocoDeTramiteProtocolo = $objBlocoDeTramiteProtocoloFixture->buscar([
+        'IdProtocolo' => $objProtocoloDTO->getDblIdProtocolo(),
+      ]);
+
+      // precisa ter ao menos um resultado e o numIdAndamento ser 6
+      if (empty($objBlocoDeTramiteProtocolo) || $objBlocoDeTramiteProtocolo[0]->getNumIdAndamento() !== 6) {
+          return false;
+      }
       return true;
     }, PEN_WAIT_TIMEOUT);
 
@@ -85,8 +108,8 @@ class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioB
     /**
      * Teste pra validar mensagem de documento não assinado ao ser inserido em bloco
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
      * @return void
      */
@@ -163,8 +186,8 @@ class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioB
     /**
      * Teste pra validar mensagem de documento não assinado ao ser inserido em bloco
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
      * @return void
      */
@@ -230,7 +253,7 @@ class TramiteBlocoDeTramiteSituacaoProcessoConcluidoTest extends FixtureCenarioB
       if (mb_strpos($colunasEstado[0]->getText(), $estadoEsperado) === false) {
           return false;
       }
-      $this->assertEquals(mb_convert_encoding("Concluído", 'UTF-8', 'ISO-8859-1'), $colunasEstado[0]->getText());
+      $this->assertEquals($estadoEsperado, $colunasEstado[0]->getText());
         
       $objBlocoDeTramiteProtocoloFixture = new \BlocoDeTramiteProtocoloFixture();
       $objBlocoDeTramiteProtocolo = $objBlocoDeTramiteProtocoloFixture->buscar([

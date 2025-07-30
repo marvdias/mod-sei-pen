@@ -1,9 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  *
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteProcessoRestritoHipotesePadraoTest extends FixtureCenarioBaseTestCase
 {
@@ -16,10 +19,10 @@ class TramiteProcessoRestritoHipotesePadraoTest extends FixtureCenarioBaseTestCa
     /**
      * Teste de trâmite externo de processo com restrição de acesso e hipótese legal não mapeada, mas com hipótese padrão definida
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      * 
      * @return void
      */
@@ -58,10 +61,10 @@ class TramiteProcessoRestritoHipotesePadraoTest extends FixtureCenarioBaseTestCa
     /**
      * Teste de verificação do correto envio do processo no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_restrito_hipotese_nao_mapeada
+     * #[Depends('test_tramitar_processo_restrito_hipotese_nao_mapeada')]
      *
      * @return void
      */
@@ -103,10 +106,10 @@ class TramiteProcessoRestritoHipotesePadraoTest extends FixtureCenarioBaseTestCa
     /**
      * Teste de verificação do correto recebimento do processo contendo apenas um documento interno (gerado)
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_restrito_hipotese_nao_mapeada
+     * #[Depends('test_verificar_origem_processo_restrito_hipotese_nao_mapeada')]
      *
      * @return void
      */

@@ -123,7 +123,12 @@ class TramiteBlocoExternoComProcessoNaoMapeadoRecusaTest extends FixtureCenarioB
 
     }, PEN_WAIT_TIMEOUT);
 
-    sleep(5);
+    // após o wait, garante de fato que não existem mais elementos
+    $imgs = $this->paginaBase->elementsByCss(
+      '#tblBlocos tbody tr td:nth-child(7) img[title="Aguardando Processamento"]'
+    );
+    $this->assertCount(0, $imgs, 'Ainda existem processos em processamento');
+
   }
 
   public function test_verificar_envio_tramite_em_bloco()

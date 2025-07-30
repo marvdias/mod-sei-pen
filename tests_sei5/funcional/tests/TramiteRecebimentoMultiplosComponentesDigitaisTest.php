@@ -5,7 +5,7 @@ use PHPUnit\Framework\Attributes\{Group,Large,Depends};
 
 /**
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class TramiteRecebimentoMultiplosComponentesDigitaisTest extends FixtureCenarioBaseTestCase
 {
@@ -30,7 +30,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisTest extends FixtureCenarioB
     /**
      * Teste de recebimento dedocumento avulso com 2 componentes digitais
      *
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -89,7 +89,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisTest extends FixtureCenarioB
     /**
      * Teste de trâmite externo de processo com devolução para a mesma unidade de origem
      *
-     * @depends test_recebimento_processo_com_3_componentes_digitais
+     * #[Depends('test_recebimento_processo_com_3_componentes_digitais')]
      *
      * @return void
      */

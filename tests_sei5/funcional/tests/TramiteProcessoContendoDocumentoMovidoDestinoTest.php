@@ -1,4 +1,8 @@
 <?php
+
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /*
 Escopo do caso de teste:
     Órgão 1:
@@ -30,7 +34,7 @@ Escopo do caso de teste:
 /**
  *
  * Execution Groups
- * @group exxecute_parallel
+ * #[Group('exxecute_parallel')]
  */
 class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBaseTestCase
 {
@@ -61,9 +65,9 @@ class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBa
             4-criar Documento Interno (documentoTeste3) no Processo Principal
             5-tramitar Processo Principal para o Órgão 2 com validação no remetente
 
-    @group TramiteProcessoContendoDocumentoMovidoDestino
-    @large
-    @Depends CenarioBaseTestCase::setUpBeforeClass
+    #[Group('TramiteProcessoContendoDocumentoMovidoDestino')]
+    #[Large]
+    #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
     @return void
     */
   public function test_criar_processo_contendo_documentos_tramitar_remetente()
@@ -139,8 +143,8 @@ class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBa
             11-criar documento interno (documentoTeste5) no Processo Principal
             12-tramitar Processo Principal para o Órgão 1 com validação no remetente
     
-    @group TramiteProcessoContendoDocumentoMovidoDestino
-    @large
+    #[Group('TramiteProcessoContendoDocumentoMovidoDestino')]
+    #[Large]
     @depends test_criar_processo_contendo_documentos_tramitar_remetente
     @return void
     */
@@ -226,8 +230,8 @@ class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBa
             14-criar documento interno (documentoTeste6) no Processo Principal
             15-tramitar Processo Principal para o Órgão 2 com validação no remetente
         
-    @group TramiteProcessoContendoDocumentoMovidoDestino
-    @large
+    #[Group('TramiteProcessoContendoDocumentoMovidoDestino')]
+    #[Large]
     @depends test_criar_mover_incluir_documentos_devolver_processo_remetente
     @return void
     */
@@ -289,8 +293,8 @@ class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBa
             17-criar documento interno (documentoTeste7) no Processo Principal
             18-tramitar Processo Principal para o Órgão 1 com validação no remetente
         
-    @group TramiteProcessoContendoDocumentoMovidoDestino
-    @large
+    #[Group('TramiteProcessoContendoDocumentoMovidoDestino')]
+    #[Large]
     @depends test_incluir_documento_tramitar_destinatario
     @return void
     */
@@ -350,8 +354,8 @@ class TramiteProcessoContendoDocumentoMovidoDestinoTest extends FixtureCenarioBa
         Órgão 1:
             19-verificar correto recebimento do processo no destino (Órgão 1)
         
-    @group TramiteProcessoContendoDocumentoMovidoDestino
-    @large
+    #[Group('TramiteProcessoContendoDocumentoMovidoDestino')]
+    #[Large]
     @depends test_incluir_documento_tramitar_remetente
     @return void
     */

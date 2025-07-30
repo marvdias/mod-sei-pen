@@ -5,6 +5,7 @@ use Tests\Funcional\Sei\Fixtures\{ProtocoloFixture,ProcedimentoFixture,Atividade
 use Tests\Funcional\Sei\Fixtures\{ParticipanteFixture,RelProtocoloAssuntoFixture,AtributoAndamentoFixture};
 use Tests\Funcional\Sei\Fixtures\{DocumentoFixture,AssinaturaFixture,AnexoFixture,AnexoProcessoFixture};
 use Tests\Funcional\Sei\Fixtures\{HipoteseLegalFixture,TipoProcedimentoFixture};
+use PHPUnit\Framework\AssertionFailedError;
 
 use function PHPSTORM_META\map;
 /**

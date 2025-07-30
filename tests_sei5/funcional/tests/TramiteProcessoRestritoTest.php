@@ -1,9 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  *
  * Execution Groups
- * @group execute_parallel_group1
+ * #[Group('execute_parallel_group1')]
  */
 class TramiteProcessoRestritoTest extends FixtureCenarioBaseTestCase
 {
@@ -16,10 +19,10 @@ class TramiteProcessoRestritoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de trâmite externo de processo com restrição de acesso
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -59,10 +62,10 @@ class TramiteProcessoRestritoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto envio do processo no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_restrito
+     * #[Depends('test_tramitar_processo_restrito')]
      *
      * @return void
      */
@@ -104,10 +107,10 @@ class TramiteProcessoRestritoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto recebimento do processo contendo apenas um documento interno (gerado)
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_restrito
+     * #[Depends('test_verificar_origem_processo_restrito')]
      *
      * @return void
      */

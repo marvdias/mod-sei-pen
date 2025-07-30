@@ -1,9 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
- * @group rodarseparado
- * @group rodarseparado2
- * @group execute_alone_group1
+ * #[Group('rodarseparado')]
+ * #[Group('rodarseparado2')]
+ * #[Group('execute_alone_group1')]
  */
 class TramiteProcessoContendoDocumentoExternoParticionadoTest extends FixtureCenarioBaseTestCase
 {
@@ -33,8 +36,8 @@ class TramiteProcessoContendoDocumentoExternoParticionadoTest extends FixtureCen
     /**
      * Teste de trâmite externo de processo contendo documento externo particionado acima de 60Mb
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
      * @Depends CenarioBaseTestCase::setUpBeforeClass
      *
@@ -80,10 +83,10 @@ class TramiteProcessoContendoDocumentoExternoParticionadoTest extends FixtureCen
     /**
      * Teste de verificação do correto envio do processo no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_contendo_documento_externo_60mb
+     * #[Depends('test_tramitar_processo_contendo_documento_externo_60mb')]
      *
      * @return void
      */
@@ -121,10 +124,10 @@ class TramiteProcessoContendoDocumentoExternoParticionadoTest extends FixtureCen
     /**
      * Teste de verificação do correto recebimento do processo contendo apenas um documento interno (gerado)
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_contendo_documento_externo_60mb
+     * #[Depends('test_verificar_origem_processo_contendo_documento_externo_60mb')]
      *
      * @return void
      */

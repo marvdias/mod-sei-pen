@@ -1,10 +1,13 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use Facebook\WebDriver\WebDriverBy;
+
 /**
  * Teste de tramite de processos em bloco
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class TramiteBlocoExternoLimiteAnexoTest extends FixtureCenarioBaseTestCase
 {
@@ -25,8 +28,8 @@ class TramiteBlocoExternoLimiteAnexoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste inicial de trâmite de um processo contendo outro anexado
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
      * @return void
      */

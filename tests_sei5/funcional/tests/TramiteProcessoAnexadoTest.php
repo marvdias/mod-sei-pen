@@ -1,10 +1,13 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * Testes de trâmite de processos anexado
  *
  * Execution Groups
- * @group execute_parallel_group2
+ * #[Group('execute_parallel_group2')]
  */
 class TramiteProcessoAnexadoTest extends FixtureCenarioBaseTestCase
 {
@@ -22,10 +25,10 @@ class TramiteProcessoAnexadoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste inicial de trâmite de um processo contendo outro anexado
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -82,10 +85,10 @@ class TramiteProcessoAnexadoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto envio do processo anexado no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_anexado_da_origem
+     * #[Depends('test_tramitar_processo_anexado_da_origem')]
      *
      * @return void
      */
@@ -120,10 +123,10 @@ class TramiteProcessoAnexadoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto recebimento do processo anexado no destinatário
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_anexado
+     * #[Depends('test_verificar_origem_processo_anexado')]
      *
      * @return void
      */

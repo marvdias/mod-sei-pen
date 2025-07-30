@@ -1,11 +1,13 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  * Testes de mapeamento de tipos de processo reativar
  * Reativar tipos de processos
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class MapeamentoTipoProcessoReativarTest extends FixtureCenarioBaseTestCase
 {
@@ -49,7 +51,7 @@ class MapeamentoTipoProcessoReativarTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de reativação de um Relacionamento entre Órgãos
      * 
-     * @large
+     * #[Large]
      *
      * @return void
      */
@@ -84,7 +86,7 @@ class MapeamentoTipoProcessoReativarTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de desativação de um Relacionamento entre Órgãos via checkbox
      *
-     * @large
+     * #[Large]
      *
      * @return void
      */

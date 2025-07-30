@@ -5,7 +5,7 @@
  * Cadastro mapeamento de orgãos
  *
  * Execution Groups
- * @group execute_alone_group1
+ * #[Group('execute_alone_group1')]
  */
 class MapeamentoTipoProcessoRelacionamentoOrgaosCadastroTest extends FixtureCenarioBaseTestCase
 {
@@ -65,7 +65,7 @@ class MapeamentoTipoProcessoRelacionamentoOrgaosCadastroTest extends FixtureCena
     /**
      * Teste para cadastro de mapeamento de orgão exteno já existente
      *
-     * @group MapeamentoOrgaoExterno
+     * #[Group('MapeamentoOrgaoExterno')]
      *
      * @return void
      */
@@ -101,7 +101,7 @@ class MapeamentoTipoProcessoRelacionamentoOrgaosCadastroTest extends FixtureCena
     /**
      * Teste para editar mapeamento de orgão exteno
      *
-     * @group MapeamentoOrgaoExterno
+     * #[Group('MapeamentoOrgaoExterno')]
      *
      * @return void
      */

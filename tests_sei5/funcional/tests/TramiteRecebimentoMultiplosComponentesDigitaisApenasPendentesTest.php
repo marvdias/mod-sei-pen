@@ -25,7 +25,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisApenasPendentesTest extends 
     /**
      * Teste de recebimento dedocumento avulso com 2 componentes digitais
      *
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisApenasPendentesTest extends 
     /**
      * Teste de trâmite externo de processo com devolução para a mesma unidade de origem
      *
-     * @depends test_recebimento_processo_com_3_componentes_digitais
+     * #[Depends('test_recebimento_processo_com_3_componentes_digitais')]
      *
      * @return void
      */
@@ -107,7 +107,7 @@ class TramiteRecebimentoMultiplosComponentesDigitaisApenasPendentesTest extends 
 
     /**
      *
-     * @depends test_devolucao_processo_para_origem_1
+     * #[Depends('test_devolucao_processo_para_origem_1')]
      *
      * @return void
      */

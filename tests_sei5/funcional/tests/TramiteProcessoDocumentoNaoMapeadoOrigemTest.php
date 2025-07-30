@@ -1,8 +1,10 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+
 /**
  * Execution Groups
- * @group execute_alone_group4
+ * #[Group('execute_alone_group4')]
  */
 class TramiteProcessoDocumentoNaoMapeadoOrigemTest extends FixtureCenarioBaseTestCase
 {
@@ -30,10 +32,10 @@ class TramiteProcessoDocumentoNaoMapeadoOrigemTest extends FixtureCenarioBaseTes
     /**
      * Teste de trâmite externo de processo contendo um documento interno com espécie documental não mapeada
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      *
      * @return void
      */
@@ -66,10 +68,10 @@ class TramiteProcessoDocumentoNaoMapeadoOrigemTest extends FixtureCenarioBaseTes
     /**
      * Teste de trâmite externo de processo contendo um documento externo com espécie documental não mapeada
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      * 
-     * @depends test_tramitar_processo_documento_interno_nao_mapeado
+     * #[Depends('test_tramitar_processo_documento_interno_nao_mapeado')]
      *
      * @return void
      */

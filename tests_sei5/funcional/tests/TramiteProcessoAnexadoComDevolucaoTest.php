@@ -1,9 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
+
 /**
  * Testes de trâmite de processos anexado considerando a devolução do mesmo para a entidade de origem
  * Execution Groups
- * @group execute_alone_group4
+ * #[Group('execute_alone_group4')]
  */
 class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
 {
@@ -23,10 +26,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste inicial de trâmite de um processo contendo outro anexado
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
-     * @Depends CenarioBaseTestCase::setUpBeforeClass
+     * #[Depends('CenarioBaseTestCase::setUpBeforeClass')]
      * 
      * @return void
      */
@@ -83,10 +86,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto envio do processo anexado no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_tramitar_processo_anexado_da_origem
+     * #[Depends('test_tramitar_processo_anexado_da_origem')]
      *
      * @return void
      */
@@ -122,10 +125,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto recebimento do processo anexado no destinatário
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_origem_processo_anexado
+     * #[Depends('test_verificar_origem_processo_anexado')]
      *
      * @return void
      */
@@ -168,10 +171,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de trâmite externo de processo realizando a devolução para a mesma unidade de origem
      *
-     * @group envio
-     * @large
+     * #[Group('envio')]
+     * #[Large]
      *
-     * @depends test_verificar_destino_processo_anexado
+     * #[Depends('test_verificar_destino_processo_anexado')]
      *
      * @return void
      */
@@ -217,10 +220,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação do correto envio do processo anexado no sistema remetente
      *
-     * @group verificacao_envio
-     * @large
+     * #[Group('verificacao_envio')]
+     * #[Large]
      *
-     * @depends test_devolucao_processo_para_origem
+     * #[Depends('test_devolucao_processo_para_origem')]
      *
      * @return void
      */
@@ -255,10 +258,10 @@ class TramiteProcessoAnexadoComDevolucaoTest extends FixtureCenarioBaseTestCase
     /**
      * Teste de verificação da correta devolução do processo anexado no destinatário
      *
-     * @group verificacao_recebimento
-     * @large
+     * #[Group('verificacao_recebimento')]
+     * #[Large]
      *
-     * @depends test_verificar_devolucao_origem_processo_anexado
+     * #[Depends('test_verificar_devolucao_origem_processo_anexado')]
      *
      * @return void
      */
