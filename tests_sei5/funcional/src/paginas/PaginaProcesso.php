@@ -9,7 +9,7 @@ use Facebook\WebDriver\Exception\TimeOutException;
 
 class PaginaProcesso extends PaginaTeste
 {
-    const STA_STATUS_PROCESSO_ABERTO = 1;
+    const STA_STATUS_PROCESSO_ABERTO   = 1;
     const STA_STATUS_PROCESSO_CONCLUIDO = 2;
 
   public function __construct(RemoteWebDriver $driver, $testcase)
@@ -88,6 +88,7 @@ class PaginaProcesso extends PaginaTeste
 
   public function navegarParaConsultarAndamentos(): void
     {
+      sleep(2);
       $this->waitUntil(function() {
           $this->frame(null);
           $this->frame('ifrArvore');
@@ -194,11 +195,27 @@ class PaginaProcesso extends PaginaTeste
         return true;
     }
     catch(Exception $e)
-      {
+    {
         return false;
     }
   }
 
+  public function ehDocumentoMovido(string $nomeDocumentoArvore): bool
+    {
+    try
+        {
+        sleep(2);
+        $this->frame(null);
+        $this->frame("ifrArvore");
+        $this->elByLinkText($nomeDocumentoArvore)->findElement(
+            WebDriverBy::xpath(".//preceding-sibling::a[1]/img[contains(@src,'svg/documento_movido.svg?')]"));
+        return true;
+    }
+    catch(Exception $e)
+        {
+        return false;
+    }
+  }
   private function selecionarItemArvore(string $nomeArvore): void
     {
       $this->frame(null);
@@ -245,5 +262,19 @@ class PaginaProcesso extends PaginaTeste
     } catch (\Exception $e) {
         return false;
     }
+  }
+
+  public function reproduzirUltimoTramite()
+    {
+      sleep(1);
+      $this->frame(null);
+      $this->frame("ifrConteudoVisualizacao");
+      sleep(1);
+      $this->elByXPath("//img[@alt='Reproduzir Último Trâmite']")->click();
+      sleep(1);
+      $r1 = $this->alertTextAndClose(true);
+      sleep(1);
+      $r2 = $this->alertTextAndClose(true);
+      return $r2;
   }
 }

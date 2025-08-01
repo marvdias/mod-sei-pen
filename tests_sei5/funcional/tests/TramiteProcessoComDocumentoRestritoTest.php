@@ -47,9 +47,15 @@ class TramiteProcessoComDocumentoRestritoTest extends FixtureCenarioBaseTestCase
       self::$remetente['SENHA']
     );
     
-    self::$protocoloTeste = $this->cadastrarProcessoFixture(self::$processoTeste);  // Cadastrar novo processo de teste
+
     self::$documentoTeste["RESTRICAO"] = \ProtocoloRN::$NA_RESTRITO; // Configuração de documento restrito
     self::$documentoTeste["HIPOTESE_LEGAL"] = self::$remetente["HIPOTESE_RESTRICAO"]; // Configurar Hipotese legal
+
+    // A partir da versão SEI 5.0 ao criar um documento restrito o processo torna-se restrito também
+    self::$processoTeste["RESTRICAO"] = \ProtocoloRN::$NA_RESTRITO; // Configuração de documento restrito
+    self::$processoTeste["HIPOTESE_LEGAL"] = self::$remetente["HIPOTESE_RESTRICAO"]; // Configurar Hipotese legal
+
+    self::$protocoloTeste = $this->cadastrarProcessoFixture(self::$processoTeste);  // Cadastrar novo processo de teste
     $this->cadastrarDocumentoInternoFixture(self::$documentoTeste, self::$protocoloTeste->getDblIdProtocolo()); // Incluir Documentos no Processo
 
     $this->paginaBase->navegarParaControleProcesso();
@@ -64,8 +70,7 @@ class TramiteProcessoComDocumentoRestritoTest extends FixtureCenarioBaseTestCase
       false
     );
 
-    // A partir da versão SEI 5.0 ao criar um documento restrito o processo torna-se restrito também
-    self::$processoTeste["RESTRICAO"] = \ProtocoloRN::$NA_RESTRITO; // Configuração de documento restrito
+
 
   }
 
@@ -165,6 +170,118 @@ class TramiteProcessoComDocumentoRestritoTest extends FixtureCenarioBaseTestCase
     $this->assertTrue(count($listaDocumentos) == 1);
     $this->validarDadosDocumento($listaDocumentos[0], self::$documentoTeste, self::$destinatario);
   }
+
+    /**
+     * Teste de realizar reprodução de último tramite
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_verificar_destino_processo_com_documento_restrito')]
+     * @return void
+     */
+    public function test_realizar_pedido_reproducao_ultimo_tramite()
+    {
+        $strProtocoloTeste = self::$protocoloTeste->getStrProtocoloFormatado();
+
+        $this->acessarSistema(self::$destinatario['URL'], self::$destinatario['SIGLA_UNIDADE'], self::$destinatario['LOGIN'], self::$destinatario['SENHA']);
+
+        // 11 - Reproduzir último trâmite
+        $this->abrirProcesso($strProtocoloTeste);
+        $resultadoReproducao = $this->paginaProcesso->reproduzirUltimoTramite();
+        $this->assertStringContainsString(mb_convert_encoding("Reprodução de último trâmite executado com sucesso!", 'UTF-8', 'ISO-8859-1'), $resultadoReproducao);
+
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite iniciado para o protocolo ".  $strProtocoloTeste, 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+    }
+
+    /**
+     * Teste para verificar a reprodução de último tramite no destinatario
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_verificar_destino_processo_com_documento_restrito')]
+     *
+     * @return void
+     */
+    public function test_reproducao_ultimo_tramite()
+    {
+        $strProtocoloTeste = self::$protocoloTeste->getStrProtocoloFormatado();
+
+        $this->acessarSistema(self::$remetente['URL'], self::$remetente['SIGLA_UNIDADE'], self::$remetente['LOGIN'], self::$remetente['SENHA']);
+
+        $this->abrirProcesso($strProtocoloTeste);
+
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite recebido na entidade", 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+
+    }
+
+    /**
+     * Teste para verificar a reprodução de último tramite no remetente
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_verificar_destino_processo_com_documento_restrito')]
+     *
+     * @return void
+     */
+    public function test_reproducao_ultimo_tramite_remetente_finalizado()
+    {
+        $strProtocoloTeste = self::$protocoloTeste->getStrProtocoloFormatado();
+
+        $this->acessarSistema(self::$destinatario['URL'], self::$destinatario['SIGLA_UNIDADE'], self::$destinatario['LOGIN'], self::$destinatario['SENHA']);
+
+        // 11 - Abrir protocolo na tela de controle de processos
+        $this->abrirProcesso($strProtocoloTeste);
+        
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite finalizado para o protocolo ".  $strProtocoloTeste, 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+
+        // Verificar recibos de trâmite
+      $this->validarRecibosTramite("Recebimento do Processo $strProtocoloTeste", false, true);
+
+      $listaDocumentos = $this->paginaProcesso->listarDocumentos();
+      $this->assertTrue(count($listaDocumentos) == 1);
+      $this->validarDadosDocumento($listaDocumentos[0], self::$documentoTeste, self::$destinatario);
+
+    }
+
 
   public static function tearDownAfterClass(): void
   {

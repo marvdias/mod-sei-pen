@@ -14,9 +14,8 @@ class PaginaConsultarAndamentos extends PaginaTeste
      */
   public function contemTramite(string $mensagemTramite): bool
     {
-      $texto = $this->getConteudoBody();
-      $mensagem = mb_convert_encoding($mensagemTramite, 'UTF-8', 'ISO-8859-1');
-      return strpos($texto, $mensagem) !== false;
+      $texto = $this->getVisualizacaoBody();
+      return strpos($texto, $mensagemTramite) !== false;
   }
 
     /**

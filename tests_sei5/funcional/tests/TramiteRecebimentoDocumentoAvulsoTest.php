@@ -1,7 +1,7 @@
 <?php
 
-use utilphp\util;
 use PHPUnit\Framework\Attributes\{Group,Large,Depends};
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * Execution Groups
@@ -18,14 +18,14 @@ class TramiteRecebimentoDocumentoAvulsoTest extends FixtureCenarioBaseTestCase
 
     protected $servicoPEN;
     protected $servicoPEN2;
-  public static $remetente;
-  public static $destinatario;
-  public static $processoTeste;
-  public static $documentoTeste1;
-  public static $documentoTeste2;
-  public static $documentoTeste3;
-  public static $documentoTeste4;
-  public static $documentoTeste5;
+    public static $remetente;
+    public static $destinatario;
+    public static $processoTeste;
+    public static $documentoTeste1;
+    public static $documentoTeste2;
+    public static $documentoTeste3;
+    public static $documentoTeste4;
+    public static $documentoTeste5;
 
     /**
      * Teste preparatório (setUp()). Definição de contextos e instanciação da api de integração
@@ -36,7 +36,7 @@ class TramiteRecebimentoDocumentoAvulsoTest extends FixtureCenarioBaseTestCase
      */
   public function setUp(): void
     {
-      parent::setup();
+      parent::setUp();
 
       // Carregar contexto de testes e dados sobre certificado digital
       self::$remetente = $this->definirContextoTeste(CONTEXTO_ORGAO_B);
@@ -55,10 +55,10 @@ class TramiteRecebimentoDocumentoAvulsoTest extends FixtureCenarioBaseTestCase
       $localCertificado = self::$remetente['LOCALIZACAO_CERTIFICADO_DIGITAL'];
       $senhaCertificado = self::$remetente['SENHA_CERTIFICADO_DIGITAL'];
 
-     $this->servicoPEN = $this->instanciarApiDeIntegracao($localCertificado, $senhaCertificado);
+      $this->servicoPEN = $this->instanciarApiDeIntegracao($localCertificado, $senhaCertificado);
 
       // Simular um trâmite chamando a API do Barramento diretamente
-      self::$documentoTeste1 = $this->gerarDadosDocumentoExternoTeste(self::$remetente, array(self::CONTEUDO_DOCUMENTO_A));
+      self::$documentoTeste1 = $this->gerarDadosDocumentoExternoTeste(self::$remetente, [self::CONTEUDO_DOCUMENTO_A]);
 
       $metadadosDocumentoTeste = $this->construirMetadadosDocumentoTeste(self::$documentoTeste1);
       $novoTramite = $this->enviarMetadadosDocumento(self::$remetente, self::$destinatario, $metadadosDocumentoTeste);
@@ -149,6 +149,113 @@ class TramiteRecebimentoDocumentoAvulsoTest extends FixtureCenarioBaseTestCase
       $documentos = array(self::$documentoTeste1, self::$documentoTeste2, self::$documentoTeste3, self::$documentoTeste4, self::$documentoTeste5);
       $this->realizarValidacaoRecebimentoProcessoNoDestinatario(self::$processoTeste, $documentos, self::$destinatario);
   }
+
+  	/**
+     * Teste de realizar reprodução de último tramite
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_verificar_recebimento_processo_destino_documento_avulso')]
+     * @return void
+     */
+    public function test_realizar_pedido_reproducao_ultimo_tramite()
+    {
+        $strProtocoloTeste = self::$processoTeste["PROTOCOLO"];
+
+        $this->acessarSistema(self::$destinatario['URL'], self::$destinatario['SIGLA_UNIDADE'], self::$destinatario['LOGIN'], self::$destinatario['SENHA']);
+
+        // 11 - Reproduzir último trâmite
+        $this->abrirProcesso($strProtocoloTeste);
+        $resultadoReproducao = $this->paginaProcesso->reproduzirUltimoTramite();
+        $this->assertStringContainsString(mb_convert_encoding("Reprodução de último trâmite executado com sucesso!", 'UTF-8', 'ISO-8859-1'), $resultadoReproducao);
+
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite iniciado para o protocolo ".  $strProtocoloTeste, 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+    }
+
+    /**
+     * Teste para verificar a reprodução de último tramite no destinatario
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_realizar_pedido_reproducao_ultimo_tramite')]
+     *
+     * @return void
+     */
+    public function test_reproducao_ultimo_tramite()
+    {
+        $strProtocoloTeste = self::$processoTeste["PROTOCOLO"];
+
+        $this->acessarSistema(self::$remetente['URL'], self::$remetente['SIGLA_UNIDADE'], self::$remetente['LOGIN'], self::$remetente['SENHA']);
+
+        $this->abrirProcesso($strProtocoloTeste);
+
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite recebido na entidade", 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+
+    }
+
+    /**
+     * Teste para verificar a reprodução de último tramite no remetente
+     *
+     * #[Group('envio')]
+     * #[Large]
+     *
+     * #[Depends('test_reproducao_ultimo_tramite')]
+     *
+     * @return void
+     */
+    public function test_reproducao_ultimo_tramite_remetente_finalizado()
+    {
+        $strProtocoloTeste = self::$processoTeste["PROTOCOLO"];
+
+        $this->acessarSistema(self::$destinatario['URL'], self::$destinatario['SIGLA_UNIDADE'], self::$destinatario['LOGIN'], self::$destinatario['SENHA']);
+
+        // 11 - Abrir protocolo na tela de controle de processos
+        $this->abrirProcesso($strProtocoloTeste);
+        
+        $this->waitUntil(function() {
+            sleep(5);
+            $this->paginaBase->refresh();
+            $this->paginaProcesso->navegarParaConsultarAndamentos();
+            $mensagemTramite = mb_convert_encoding("Reprodução de último trâmite finalizado para o protocolo ".  $strProtocoloTeste, 'UTF-8', 'ISO-8859-1');
+          try {
+              $this->assertTrue($this->paginaConsultarAndamentos->contemTramite($mensagemTramite));
+              return true;
+          } catch (AssertionFailedError $e) {
+              return false;
+          }
+
+        }, PEN_WAIT_TIMEOUT);
+
+      $this->sairSistema();
+      $documentos = array(self::$documentoTeste1, self::$documentoTeste2, self::$documentoTeste3, self::$documentoTeste4, self::$documentoTeste5);
+      $this->realizarValidacaoRecebimentoProcessoNoDestinatario(self::$processoTeste, $documentos, self::$destinatario);
+    }
 
 
   private function receberReciboEnvio($novoTramite)

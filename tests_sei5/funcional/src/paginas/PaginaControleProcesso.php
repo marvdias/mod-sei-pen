@@ -25,7 +25,8 @@ class PaginaControleProcesso extends PaginaTeste
     if ($processosGerados) {
         $paineis[] = 'tblProcessosGerados';
     }
-    if($processosRecebidos) { $paineisPesquisa[] = 'tblProcessosRecebidos';
+    if($processosRecebidos) { 
+        $paineis[] = 'tblProcessosRecebidos';
     }
 
     $resultado = [];
@@ -106,7 +107,7 @@ class PaginaControleProcesso extends PaginaTeste
       return false;
   }
 
-/**
+    /**
      * Localiza processo pela descrição via atributo onmouseover
      *
      * @param string $descricao

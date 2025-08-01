@@ -98,7 +98,7 @@ class ReceberProcedimentoRN extends InfraRN
   }
 
   
-  protected function receberProcedimentoInternoControlado($parObjMetadadosProcedimento, $bolReproducaoUltimoTramite = false)
+  protected function receberProcedimentoInternoControlado($parObjMetadadosProcedimento, $bolReproducaoUltimoTramite)
     {
     try {
         $numIdTramite = $parObjMetadadosProcedimento->IDT;

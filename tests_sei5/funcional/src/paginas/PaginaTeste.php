@@ -170,7 +170,14 @@ class PaginaTeste
       $this->frame(null);
 
       // Localiza todos os links com id 'lnkInfraUnidade' e clica no segundo
-      $links = $this->driver->findElements(WebDriverBy::id('lnkInfraUnidade'));
+      try {
+        $links = $this->driver->findElements(WebDriverBy::id('lnkInfraUnidade'));
+      } catch (Exception $e) {
+        $this->refresh();
+        sleep(2);
+        $links = $this->driver->findElements(WebDriverBy::id('lnkInfraUnidade'));
+      }
+      
     if (count($links) < 2) {
         throw new \RuntimeException('Link lnkInfraUnidade[2] não encontrado');
     }

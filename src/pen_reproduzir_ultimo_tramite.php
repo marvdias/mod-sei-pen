@@ -26,8 +26,8 @@ try {
       try {
         $objProcessoEletronicoRN = new ProcessoEletronicoRN();
         $result = $objProcessoEletronicoRN->reproduzirUltimoTramite($_GET['nre'], $_GET['id_repositorio'], $_GET['id_estrutura']);
-
-        if (!$result->error) {
+        $error = is_array($result) && $result['error'] == true ? true : false;
+        if (!$error) {
           $ticketComponentesDigitais = $result->tramiteDeProcessoCriado->ticketParaEnvioDeComponentesDigitais;
           $novoIDT = $result->tramiteDeProcessoCriado->IDT;
           $nre = $result->tramiteDeProcessoCriado->NRE;
@@ -64,7 +64,7 @@ try {
         
 
 
-        $msgAlert = !$result->error ? 'Reprodução de último trâmite executado com sucesso! NRE:'.$nre.', IDT:'.$novoIDT.',TicketEnvioComponentesDigitais:'.$ticketComponentesDigitais : 'Erro! '.mb_convert_encoding($result->message, 'ISO-8859-1', 'UTF-8');
+        $msgAlert = !$error ? 'Reprodução de último trâmite executado com sucesso! NRE:'.$nre.', IDT:'.$novoIDT.',TicketEnvioComponentesDigitais:'.$ticketComponentesDigitais : 'Erro! '.mb_convert_encoding($result['message'], 'ISO-8859-1', 'UTF-8');
         echo '
         <script type="text/javascript">
           alert("'.$msgAlert.'");

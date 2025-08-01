@@ -329,6 +329,8 @@ class CenarioBaseTestCase extends TestCase
         $this->paginaControleProcesso->abrirProcesso($protocolo);
     } catch (\Exception $e) {
         $this->paginaBase->pesquisar($protocolo);
+        sleep(2);
+        $this->paginaBase->elByXPath('(//a[@id="lnkInfraMenuSistema"])[2]')->click();
     }
   }
 
@@ -589,6 +591,10 @@ class CenarioBaseTestCase extends TestCase
     {
       $this->paginaBase->frame(null);
       $this->paginaBase->navegarParaControleProcesso();
+      $txtPesquisaMenu = $this->paginaBase->elById("txtInfraPesquisarMenu");
+      if (!$txtPesquisaMenu->isDisplayed()) {
+          $this->paginaBase->elByXPath('(//a[@id="lnkInfraMenuSistema"])[2]')->click();
+      }
       $this->paginaBase->navegarPara("Processos em Tramitação Externa");
       $this->assertEquals($deveExistir, $this->paginaProcessosTramitadosExternamente->contemProcesso($protocolo));
   }
